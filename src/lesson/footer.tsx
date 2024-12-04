@@ -32,9 +32,9 @@ export const Footer = ({
   return (
     <footer
       className={cn(
-        "h-[100px] border-t-2 lg:h-[140px]",
+        "h-[50px] border-t-2 lg:h-[140px]",
         status === "correct" && "border-transparent bg-green-100",
-        status === "wrong" && "border-transparent bg-rose-100"
+        status === "wrong" && "border-transparent bg-rose-100",
       )}
     >
       <div className="mx-auto flex h-full max-w-[1140px] items-center justify-between px-6 lg:px-10">
@@ -57,9 +57,9 @@ export const Footer = ({
             variant="default"
             size={isMobile ? "sm" : "lg"}
             onClick={() => {
-            //  updateStatusLesson(
+              //  updateStatusLesson(
               //  Number(SessionStorage.get(SessionKey.LESSON_ID))
-            //  );
+              //  );
               SessionStorage.delete(SessionKey.LESSON_ID);
               if (isTest) {
                 window.location.href = "/lesson";

@@ -83,7 +83,7 @@ export const Quiz = ({
   const [challenges, setChallenges] = useState(initialLessonChallenges);
   const [activeIndex, setActiveIndex] = useState(() => {
     const uncompletedIndex = challenges.findIndex(
-      (challenge) => !challenge.completed
+      (challenge) => !challenge.completed,
     );
 
     return uncompletedIndex === -1 ? 0 : uncompletedIndex;
@@ -132,12 +132,14 @@ export const Quiz = ({
         setCorrectQuestions(correctQuestions + 1);
         setChallenges((prevChallenges) =>
           prevChallenges.map((ch) =>
-            ch.id === challenge.id ? { ...ch, completed: true } : ch
-          )
+            challenge && ch.id === challenge.id
+              ? { ...ch, completed: true }
+              : ch,
+          ),
         );
-        updateQuestionRightAnswer(challenge.id);
+        //updateQuestionRightAnswer(challenge.id);
       } else {
-        updateQuestionWrongAnswer(challenge.id);
+        //updateQuestionWrongAnswer(challenge.id);
       }
       setPercentage((prev) => prev + 100 / challenges.length);
       onNext();
@@ -152,10 +154,10 @@ export const Quiz = ({
       setPercentage((prev) => prev + 100 / challenges.length);
       setChallenges((prevChallenges) =>
         prevChallenges.map((ch) =>
-          ch.id === challenge.id ? { ...ch, completed: true } : ch
-        )
+          challenge && ch.id === challenge.id ? { ...ch, completed: true } : ch,
+        ),
       );
-      updateQuestionRightAnswer(challenge.id);
+      //updateQuestionRightAnswer(challenge.id);
       // startTransition(() => {
       //   axios
       //     .post(`${API_BASE_URL}/challenge-progress`, {
@@ -177,7 +179,7 @@ export const Quiz = ({
       void incorrectControls.play();
       setStatus("wrong");
       if (isLesson) {
-        updateQuestionWrongAnswer(challenge.id);
+        //updateQuestionWrongAnswer(challenge.id);
         setPercentage((prev) => prev + 100 / challenges.length);
       }
       // startTransition(() => {
@@ -244,9 +246,9 @@ export const Quiz = ({
           lessonId={lessonId}
           status="completed"
           onCheck={() => {
-            updateStatusLesson(
-              Number(SessionStorage.get(SessionKey.LESSON_ID))
-            );
+            //updateStatusLesson(
+            //  Number(SessionStorage.get(SessionKey.LESSON_ID)),
+            //);
             SessionStorage.delete(SessionKey.LESSON_ID);
             if (isPractice) {
               router.push("/practice");

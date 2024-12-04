@@ -3,12 +3,19 @@ import React, { useEffect } from "react";
 import { LeftBar } from "~/components/LeftBar";
 import { BottomBar } from "~/components/BottomBar";
 import { useLeaderboardUsers } from "~/hooks/useLeaderboard";
-import { BronzeLeagueSvg, FirstPlaceSvg, SecondPlaceSvg, ThirdPlaceSvg, LockedLeagueSvg } from "~/components/Svgs";
+import {
+  BronzeLeagueSvg,
+  FirstPlaceSvg,
+  SecondPlaceSvg,
+  ThirdPlaceSvg,
+  LockedLeagueSvg,
+} from "~/components/Svgs";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import { getToken } from "~/utils/JWTService";
 
-const defaultPicture = "https://d35aaqx5ub95lt.cloudfront.net/images/leagues/2439bac00452e99ba7bf6a7ed0b04196.svg";
+const defaultPicture =
+  "https://d35aaqx5ub95lt.cloudfront.net/images/leagues/2439bac00452e99ba7bf6a7ed0b04196.svg";
 
 const LeaderboardProfile = ({
   place,
@@ -92,5 +99,9 @@ const Leaderboard: NextPage = () => {
     </div>
   );
 };
-
+export const getServerSideProps = async () => {
+  return {
+    props: {}, // Không truyền props nào
+  };
+};
 export default Leaderboard;

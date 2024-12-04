@@ -55,7 +55,7 @@ const hiragana = [
   { character: "ろ", romanji: "ro" },
   { character: "わ", romanji: "wa" },
   { character: "を", romanji: "wo" },
-  { character: "ん", romanji: "n" }
+  { character: "ん", romanji: "n" },
 ];
 
 const katakana = [
@@ -104,7 +104,7 @@ const katakana = [
   { character: "ロ", romanji: "ro" },
   { character: "ワ", romanji: "wa" },
   { character: "ヲ", romanji: "wo" },
-  { character: "ン", romanji: "n" }
+  { character: "ン", romanji: "n" },
 ];
 
 const kanji = [
@@ -160,9 +160,11 @@ const kanji = [
   { character: "猫", romanji: "neko" },
 ];
 
-const CharacterTable: React.FC<{ characters: { character: string; romanji: string }[] }> = ({ characters }) => (
+const CharacterTable: React.FC<{
+  characters: { character: string; romanji: string }[];
+}> = ({ characters }) => (
   <div
-    className="grid gap-3 mx-auto"
+    className="mx-auto grid gap-3"
     style={{
       display: "grid",
       gridTemplateColumns: "repeat(auto-fit, minmax(100px, 1fr))", // Responsive grid columns
@@ -177,7 +179,7 @@ const CharacterTable: React.FC<{ characters: { character: string; romanji: strin
     {characters.map((item, index) => (
       <Button
         key={index}
-        className="flex flex-col items-center justify-center w-20 h-16 rounded-lg shadow-md text-lg p-2"
+        className="flex h-16 w-20 flex-col items-center justify-center rounded-lg p-2 text-lg shadow-md"
       >
         <span className="text-xl">{item.character}</span>
         <span className="text-sm text-gray-500">{item.romanji}</span>
@@ -203,13 +205,13 @@ const Character: NextPage = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex min-h-screen flex-col">
       <TopBar />
 
       <div className="flex flex-1">
         <LeftBar selectedTab="Bảng chữ cái" />
 
-        <div className="flex-1 flex justify-center items-center">
+        <div className="flex flex-1 items-center justify-center">
           <div className="container mx-auto">
             {/* Tabs */}
             <div className="mb-10">
@@ -225,23 +227,35 @@ const Character: NextPage = () => {
                 ))}
               </div>
               {/* Nội dung tab */}
-              <div className="text-center mt-6">
+              <div className="mt-6 text-center">
                 {selectedTab === "Hiragana" && (
                   <div>
-                    <h2 className="text-3xl font-bold mb-6">Let's learn Hiragana!</h2>
-                    <p className="text-gray-600 mb-4">Get to know the main writing system in Japanese</p>
+                    <h2 className="mb-6 text-3xl font-bold">
+                      Let's learn Hiragana!
+                    </h2>
+                    <p className="mb-4 text-gray-600">
+                      Get to know the main writing system in Japanese
+                    </p>
                   </div>
                 )}
                 {selectedTab === "Katakana" && (
                   <div>
-                    <h2 className="text-3xl font-bold mb-6">Let's learn Katakana!</h2>
-                    <p className="text-gray-600 mb-4">Practice characters used for loanwords</p>
+                    <h2 className="mb-6 text-3xl font-bold">
+                      Let's learn Katakana!
+                    </h2>
+                    <p className="mb-4 text-gray-600">
+                      Practice characters used for loanwords
+                    </p>
                   </div>
                 )}
                 {selectedTab === "Kanji" && (
                   <div>
-                    <h2 className="text-3xl font-bold mb-6">Let's practice Kanji!</h2>
-                    <p className="text-gray-600 mb-4">Learn the complex kanji characters</p>
+                    <h2 className="mb-6 text-3xl font-bold">
+                      Let's practice Kanji!
+                    </h2>
+                    <p className="mb-4 text-gray-600">
+                      Learn the complex kanji characters
+                    </p>
                   </div>
                 )}
               </div>
@@ -256,5 +270,9 @@ const Character: NextPage = () => {
     </div>
   );
 };
-
+export const getServerSideProps = async () => {
+  return {
+    props: {}, // Không truyền props nào
+  };
+};
 export default Character;

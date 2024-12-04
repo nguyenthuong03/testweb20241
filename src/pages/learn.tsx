@@ -9,7 +9,23 @@ import { Header } from "~/components/header";
 import { Unit } from "~/components/unit";
 import { NextPage } from "next";
 
-const LearnPage: NextPage = ({ userProgress, units }) => {
+interface LearnPageProps {
+  userProgress: {
+    lessonPercentage: number;
+  };
+  units: {
+    id: number;
+    order: number;
+    description: string;
+    title: string;
+    lessons: {
+      id: number;
+      status: string;
+    }[];
+  }[];
+}
+
+const LearnPage: NextPage<LearnPageProps> = ({ userProgress, units }) => {
   return (
     <div className="flex min-h-screen flex-col">
       <TopBar />

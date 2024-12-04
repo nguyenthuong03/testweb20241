@@ -6,7 +6,12 @@ import { BottomBar } from "~/components/BottomBar";
 import { LeftBar } from "~/components/LeftBar";
 import { RightBar } from "~/components/RightBar";
 import { TopBar } from "~/components/TopBar";
-import { StreakFreezeSvg, EmptyGemSvg,DoubleOrNothingSvg,DuoPlushieSvg } from "~/components/Svgs";
+import {
+  StreakFreezeSvg,
+  EmptyGemSvg,
+  DoubleOrNothingSvg,
+  DuoPlushieSvg,
+} from "~/components/Svgs";
 
 const Shop: NextPage = () => {
   const streakFreezes = 0;
@@ -24,8 +29,8 @@ const Shop: NextPage = () => {
               <section className="flex flex-col gap-3">
                 <h3 className="text-lg font-bold">Streak Freeze</h3>
                 <p className="text-sm text-gray-500">
-                Streak Freeze cho phép chuỗi của bạn được giữ nguyên trong một lần
-                cả ngày không hoạt động.
+                  Streak Freeze cho phép chuỗi của bạn được giữ nguyên trong một
+                  lần cả ngày không hoạt động.
                 </p>
                 <div className="w-fit rounded-full bg-gray-200 px-3 py-1 text-sm font-bold uppercase text-gray-400">
                   {streakFreezes} / 2 có sẵn
@@ -43,7 +48,8 @@ const Shop: NextPage = () => {
               <section className="flex flex-col gap-3">
                 <h3 className="text-lg font-bold">Double or Nothing</h3>
                 <p className="text-sm text-gray-500">
-                Hãy nỗ lực gấp đôi số tiền cược năm lingot của bạn bằng cách duy trì chuỗi thắng trong bảy ngày liên tiếp.
+                  Hãy nỗ lực gấp đôi số tiền cược năm lingot của bạn bằng cách
+                  duy trì chuỗi thắng trong bảy ngày liên tiếp.
                 </p>
                 <button
                   className="flex w-fit items-center gap-1 rounded-2xl border-2 border-gray-300 bg-white px-4 py-2 text-sm font-bold uppercase text-gray-300"
@@ -54,7 +60,6 @@ const Shop: NextPage = () => {
               </section>
             </div>
           </div>
-          
         </div>
         <RightBar />
       </div>
@@ -62,5 +67,10 @@ const Shop: NextPage = () => {
     </div>
   );
 };
+export async function getServerSideProps() {
+  return {
+    props: {}, // Tắt prerendering
+  };
+}
 
 export default Shop;

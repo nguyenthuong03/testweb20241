@@ -8,16 +8,16 @@ import { TopBar } from "~/components/TopBar";
 
 const Shop: NextPage = () => {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex min-h-screen flex-col">
       <TopBar />
 
       <div className="flex flex-1">
         <LeftBar selectedTab="Cửa hàng" />
-        
-        <div className="flex-1 flex justify-center items-center">
+
+        <div className="flex flex-1 items-center justify-center">
           {/* Empty space to center content if needed */}
         </div>
-        
+
         <RightBar />
       </div>
 
@@ -25,5 +25,9 @@ const Shop: NextPage = () => {
     </div>
   );
 };
-
+export const getServerSideProps = async () => {
+  return {
+    props: {}, // Không truyền props nào
+  };
+};
 export default Shop;

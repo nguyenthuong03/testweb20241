@@ -7,7 +7,7 @@ import { TopBar } from "~/components/TopBar";
 import { useBoundStore } from "~/hooks/useBoundStore";
 import { SettingsRightNav } from "~/components/SettingsRightNav";
 
-import {CoachSvg} from "~/components/Svgs";
+import { CoachSvg } from "~/components/Svgs";
 
 const goalXpOptions = [
   { title: "Basic", xp: 1 },
@@ -43,7 +43,9 @@ const Coach: NextPage = () => {
         <div className="flex justify-center gap-12">
           <div className="flex w-full max-w-xl flex-col gap-8">
             <p className="text-gray-400">
-            Huấn luyện viên đây! Việc chọn mục tiêu hàng ngày sẽ giúp bạn duy trì động lực khi học ngôn ngữ. Bạn có thể thay đổi mục tiêu bất cứ lúc nào.
+              Huấn luyện viên đây! Việc chọn mục tiêu hàng ngày sẽ giúp bạn duy
+              trì động lực khi học ngôn ngữ. Bạn có thể thay đổi mục tiêu bất cứ
+              lúc nào.
             </p>
             <div className="flex gap-5">
               <CoachSvg className="hidden h-52 w-52 sm:block" />
@@ -77,5 +79,9 @@ const Coach: NextPage = () => {
     </div>
   );
 };
-
+export const getServerSideProps = async () => {
+  return {
+    props: {}, // Không truyền props nào
+  };
+};
 export default Coach;

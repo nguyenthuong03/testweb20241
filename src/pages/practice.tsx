@@ -29,7 +29,15 @@ const PracticeLayout = ({ children }: Props) => {
   );
 };
 
-const PracticePage: NextPage = ({ practiceLessons, practices }) => {
+type PracticePageProps = {
+  practiceLessons: any;
+  practices: any[];
+};
+
+const PracticePage: NextPage<PracticePageProps> = ({
+  practiceLessons,
+  practices,
+}) => {
   if (practiceLessons) {
     const initialPercentage =
       (practiceLessons.challenges.filter(
@@ -38,24 +46,49 @@ const PracticePage: NextPage = ({ practiceLessons, practices }) => {
         practiceLessons.challenges.length) *
       100;
 
+    interface ChallengeOption {
+      id: number;
+      challengeId: number;
+      text: string;
+      option: string;
+      isCorrect: boolean;
+    }
+
+    interface Challenge {
+      id: number;
+      question: string;
+      completed: boolean;
+      type: string;
+      challengeOptions: ChallengeOption[];
+    }
+
+    interface PracticeLessons {
+      id: number;
+      challenges: Challenge[];
+    }
+
     return (
       <PracticeLayout>
         <div className="flex flex-1 flex-col">
           <Quiz
             initialLessonId={Number(practiceLessons.id)}
             initialLessonChallenges={practiceLessons.challenges.map(
-              (challenge) => ({
+              (challenge: Challenge) => ({
                 ...challenge,
                 id: Number(challenge.id),
                 challengeId: Number(challenge.id),
-                challengeOptions: challenge.challengeOptions.map((option) => ({
-                  ...option,
-                  challengeId: Number(challenge.id),
-                })),
+                challengeOptions: challenge.challengeOptions.map(
+                  (option: ChallengeOption) => ({
+                    ...option,
+                    challengeId: Number(challenge.id),
+                  }),
+                ),
               }),
             )}
             initialPercentage={initialPercentage}
             isPractice={true}
+            isTest={false}
+            isLesson={false}
           />
         </div>
       </PracticeLayout>
@@ -86,14 +119,66 @@ const PracticePage: NextPage = ({ practiceLessons, practices }) => {
 
 export default PracticePage;
 
-export async function getServerSideProps(context) {
-  const { unitId } = context.query; // Access searchParams
+import { GetServerSideProps } from "next";
 
-  const practiceLessons = await getPracticeUnit(
+interface ChallengeOption {
+  id: number;
+  challengeId: number;
+  text: string;
+  option: string;
+  isCorrect: boolean;
+}
+
+interface Challenge {
+  id: number;
+  completed: boolean;
+  challengeOptions: ChallengeOption[];
+}
+
+interface PracticeLesson {
+  id: number;
+  unitId: number;
+  order: number;
+  status: string;
+  type: string;
+  xpReward: number;
+  challenges: Challenge[];
+}
+
+interface Practice {
+  id: number;
+  title: string;
+  description: string;
+  unitId: number;
+}
+
+interface Context {
+  query: {
+    unitId?: string;
+  };
+}
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { unitId } = context.query;
+
+  const practiceUnit = await getPracticeUnit(
     unitId ? Number(unitId.toString()) : undefined,
   );
+  const practiceLessons: PracticeLesson | null = practiceUnit
+    ? {
+        ...practiceUnit,
+        challenges: practiceUnit.challenges.map((challenge: any) => ({
+          ...challenge,
+          challengeOptions: challenge.challengeOptions.map((option: any) => ({
+            ...option,
+            challengeId: challenge.id,
+            text: option.text || "",
+          })),
+        })),
+      }
+    : null;
 
-  const practices = await getPractices();
+  const practices: Practice[] = await getPractices();
 
   return {
     props: {
@@ -101,4 +186,4 @@ export async function getServerSideProps(context) {
       practices,
     },
   };
-}
+};

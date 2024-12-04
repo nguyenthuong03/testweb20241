@@ -107,5 +107,9 @@ const Sound: NextPage = () => {
     </div>
   );
 };
-
+export const getServerSideProps = async () => {
+  return {
+    props: {}, // Không truyền props nào
+  };
+};
 export default Sound;

@@ -26,12 +26,12 @@ interface UserData {
 
 const Profile: NextPage = () => {
   const [userData, setUserData] = useState<UserData | null>(null);
-  const userID=getIdUserByToken();
+  const userID = getIdUserByToken();
   useEffect(() => {
     fetch(`http://localhost:8080/api/user/info/${userID}`)
-      .then(response => response.json())
+      .then((response) => response.json())
       .then((data: UserData) => setUserData(data))
-      .catch(error => console.error("Error fetching user data:", error));
+      .catch((error) => console.error("Error fetching user data:", error));
   }, []);
 
   if (!userData) {
@@ -98,7 +98,6 @@ const ProfileTopSection = ({ userData }: { userData: UserData }) => {
             <div className="text-sm text-gray-400">{phone}</div>
             <div className="text-sm text-gray-400">{email}</div>
           </div>
-        
         </div>
       </div>
       <Link
@@ -127,7 +126,7 @@ const ProfileStatsSection = ({ userXP }: { userXP: number }) => {
             <span
               className={[
                 "text-xl font-bold",
-                streak === 0 ? "text-gray-400" : ""
+                streak === 0 ? "text-gray-400" : "",
               ].join(" ")}
             >
               {streak}
@@ -159,7 +158,7 @@ const ProfileStatsSection = ({ userXP }: { userXP: number }) => {
             <span
               className={[
                 "text-xl font-bold",
-                top3Finishes === 0 ? "text-gray-400" : ""
+                top3Finishes === 0 ? "text-gray-400" : "",
               ].join(" ")}
             >
               {top3Finishes}
@@ -172,4 +171,9 @@ const ProfileStatsSection = ({ userXP }: { userXP: number }) => {
       </div>
     </section>
   );
+};
+export const getServerSideProps = async () => {
+  return {
+    props: {}, // Không truyền props nào
+  };
 };

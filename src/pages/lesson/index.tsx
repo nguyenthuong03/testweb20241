@@ -8,62 +8,119 @@ import { Quiz } from "~/lesson/quiz";
 import { LESSON_TYPE } from "~/pages/lesson/[lessonId]";
 import { SessionKey, SessionStorage } from "~/utils/session-storage";
 
+interface Lesson {
+  id: number;
+  unitId: number;
+  order: number;
+  status: string;
+  type: string;
+  xpReward: number;
+  challenges: {
+    id: number;
+    question: string;
+    imageSrc?: string;
+    audioSrc?: string;
+    challengeOptions: {
+      id: number;
+      option: string;
+      isCorrect: boolean;
+      challengeId?: number;
+      imageSrc?: string;
+      audioSrc?: string;
+    }[];
+    type: string;
+    completed: boolean;
+    challengeId?: number;
+  }[];
+}
+
 const LessonPage: NextPage = () => {
-  const [lesson, setLesson] = useState();
+  const [lesson, setLesson] = useState<Lesson | undefined>(undefined);
   const [isLoading, setIsLoading] = useState(true);
 
   const router = useRouter();
 
-  const fetchData = () => {
+  const fetchData = async (): Promise<Lesson | undefined> => {
     try {
       const lessonId = Number(SessionStorage.get(SessionKey.LESSON_ID));
-      const result = getLesson(lessonId);
+      const result = await getLesson(lessonId);
 
-      return result;
+      if (result && "challenges" in result) {
+        result.challenges = result.challenges.map((challenge: any) => ({
+          ...challenge,
+          question: challenge.question || "",
+          challengeOptions: challenge.challengeOptions || [],
+          type: challenge.type || "",
+        }));
+      }
+
+      return result as Lesson;
     } catch (error) {
       console.log(error);
-      return router.push("/learn");
+      router.push("/learn");
+      return undefined;
     } finally {
       setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    const value = fetchData();
-    setLesson(value);
+    fetchData().then((value) => {
+      setLesson(value);
+    });
   }, []);
 
   if (isLoading) return <p>Loading...</p>;
 
-  if (lesson.type === LESSON_TYPE.FLASHCARD) {
-    return <FlashcardSet initFlashCards={lesson.challenges} />;
+  if (lesson && lesson.type === LESSON_TYPE.FLASHCARD) {
+    return (
+      <FlashcardSet
+        initFlashCards={lesson.challenges.map((challenge) => ({
+          id: challenge.id,
+          word: challenge.question,
+          meaning: challenge.challengeOptions
+            .map((option) => option.option)
+            .join(", "),
+        }))}
+      />
+    );
   }
 
-  const initialPercentage =
-    (lesson.challenges.filter(
-      (challenge: { completed: boolean }) => challenge.completed,
-    ).length /
-      lesson.challenges.length) *
-    100;
+  const initialPercentage = lesson
+    ? (lesson.challenges.filter(
+        (challenge: { completed?: boolean }) => challenge.completed === true,
+      ).length /
+        lesson.challenges.length) *
+      100
+    : 0;
 
   return (
-    <Quiz
-      initialLessonId={Number(lesson.id)}
-      initialLessonChallenges={lesson.challenges.map((challenge) => ({
-        ...challenge,
-        id: Number(challenge.id),
-        challengeId: Number(challenge.challengeId),
-        challengeOptions: challenge.challengeOptions.map((option) => ({
-          ...option,
+    lesson && (
+      <Quiz
+        initialLessonId={Number(lesson.id)}
+        initialLessonChallenges={lesson.challenges.map((challenge) => ({
+          ...challenge,
+          id: Number(challenge.id),
           challengeId: Number(challenge.challengeId),
-          imageSrc: challenge.imageSrc,
-          audioSrc: challenge.audioSrc,
-        })),
-      }))}
-      initialPercentage={initialPercentage}
-      isTest={lesson.type === LESSON_TYPE.TEST}
-      isLesson={lesson.type === LESSON_TYPE.LESSON}
-    />
+          completed: challenge.completed ?? false,
+          text: challenge.question,
+          correct:
+            challenge.challengeOptions.find((option) => option.isCorrect)
+              ?.option || "",
+          imageSrc: challenge.imageSrc || "",
+          audioSrc: challenge.audioSrc || "",
+          challengeOptions: challenge.challengeOptions.map((option) => ({
+            ...option,
+            challengeId: Number(challenge.challengeId),
+            imageSrc: option.imageSrc || "",
+            audioSrc: option.audioSrc || "",
+          })),
+        }))}
+        initialPercentage={initialPercentage}
+        isTest={lesson.type === LESSON_TYPE.TEST}
+        isLesson={lesson.type === LESSON_TYPE.LESSON}
+      />
+    )
   );
 };
 
