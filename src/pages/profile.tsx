@@ -14,7 +14,6 @@ import {
   SettingsGearSvg,
 } from "~/components/Svgs";
 import Link from "next/link";
-import { Flag } from "~/components/Flag";
 import { useRouter } from "next/router";
 
 // Define the type for the user data
@@ -99,10 +98,7 @@ const ProfileTopSection = ({ userData }: { userData: UserData }) => {
             <div className="text-sm text-gray-400">{phone}</div>
             <div className="text-sm text-gray-400">{email}</div>
           </div>
-          <div className="flex items-center gap-3">
-            <ProfileTimeJoinedSvg />
-            <span className="text-gray-500">{`Tham gia vào ${joinedAt}`}</span>
-          </div>
+        
         </div>
       </div>
       <Link

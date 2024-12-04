@@ -57,9 +57,9 @@ export const Footer = ({
             variant="default"
             size={isMobile ? "sm" : "lg"}
             onClick={() => {
-              updateStatusLesson(
-                Number(SessionStorage.get(SessionKey.LESSON_ID))
-              );
+            //  updateStatusLesson(
+              //  Number(SessionStorage.get(SessionKey.LESSON_ID))
+            //  );
               SessionStorage.delete(SessionKey.LESSON_ID);
               if (isTest) {
                 window.location.href = "/lesson";

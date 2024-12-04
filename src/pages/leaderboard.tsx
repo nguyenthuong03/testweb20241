@@ -2,20 +2,11 @@ import type { NextPage } from "next";
 import React, { useEffect } from "react";
 import { LeftBar } from "~/components/LeftBar";
 import { BottomBar } from "~/components/BottomBar";
-import { useBoundStore } from "~/hooks/useBoundStore";
-import Link from "next/link";
-import {
-  BoySvg,
-  BronzeLeagueSvg,
-  FirstPlaceSvg,
-  LeaderboardExplanationSvg,
-  LockedLeagueSvg,
-  SecondPlaceSvg,
-  ThirdPlaceSvg,
-} from "~/components/Svgs";
-import { useRouter } from "next/router";
 import { useLeaderboardUsers } from "~/hooks/useLeaderboard";
+import { BronzeLeagueSvg, FirstPlaceSvg, SecondPlaceSvg, ThirdPlaceSvg, LockedLeagueSvg } from "~/components/Svgs";
+import { useRouter } from "next/router";
 import Image from "next/image";
+import { getToken } from "~/utils/JWTService";
 
 const defaultPicture = "https://d35aaqx5ub95lt.cloudfront.net/images/leagues/2439bac00452e99ba7bf6a7ed0b04196.svg";
 
@@ -29,9 +20,7 @@ const LeaderboardProfile = ({
   exp: number;
 }) => {
   return (
-    <div
-      className="flex items-center gap-5 rounded-2xl px-5 py-2 hover:bg-gray-100 md:mx-0"
-    >
+    <div className="flex items-center gap-5 rounded-2xl px-5 py-2 hover:bg-gray-100 md:mx-0">
       <div className="flex items-center gap-4">
         {place === 1 ? (
           <FirstPlaceSvg />
@@ -49,12 +38,10 @@ const LeaderboardProfile = ({
           height={48}
           className="h-12 w-12 rounded-full"
           src={defaultPicture}
-          alt=""
+          alt="User Avatar"
         />
       </div>
-      <div className="grow overflow-hidden overflow-ellipsis font-bold">
-        {name}
-      </div>
+      <div className="grow overflow-hidden overflow-ellipsis">{name}</div>
       <div className="shrink-0 text-gray-500">{`${exp} EXP`}</div>
     </div>
   );
@@ -62,7 +49,7 @@ const LeaderboardProfile = ({
 
 const Leaderboard: NextPage = () => {
   const router = useRouter();
-  const loggedIn = useBoundStore((x) => x.loggedIn);
+  const loggedIn = getToken();
 
   useEffect(() => {
     if (!loggedIn) {
@@ -71,7 +58,6 @@ const Leaderboard: NextPage = () => {
   }, [loggedIn, router]);
 
   const leaderboardLeague = "Bảng xếp hạng";
-
   const leaderboardUsers = useLeaderboardUsers();
 
   return (
@@ -91,16 +77,14 @@ const Leaderboard: NextPage = () => {
             <div className="w-full border-b-2 border-gray-200"></div>
           </div>
           <div className="w-full">
-            {leaderboardUsers.map((user, i) => {
-              return (
-                <LeaderboardProfile
-                  key={user.name}
-                  place={i + 1}
-                  name={user.name}
-                  exp={user.exp}
-                />
-              );
-            })}
+            {leaderboardUsers.map((user, i) => (
+              <LeaderboardProfile
+                key={user.name}
+                place={i + 1}
+                name={user.name}
+                exp={user.exp}
+              />
+            ))}
           </div>
         </div>
       </div>

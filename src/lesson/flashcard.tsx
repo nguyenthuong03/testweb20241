@@ -96,7 +96,7 @@ const FlashcardSet: FC<FlashcardSetProps> = (props) => {
     try {
       setIsCompleted(true);
       const lesson_id = SessionStorage.get(SessionKey.LESSON_ID) ?? "";
-      await updateStatusLesson(Number(lesson_id));
+      //await updateStatusLesson(Number(lesson_id));
       SessionStorage.delete(SessionKey.LESSON_ID);
       return await router.push("/learn");
     } catch (error) {}

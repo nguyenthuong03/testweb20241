@@ -160,16 +160,18 @@ const kanji = [
   { character: "猫", romanji: "neko" },
 ];
 
-// Thành phần Bảng chữ cái
 const CharacterTable: React.FC<{ characters: { character: string; romanji: string }[] }> = ({ characters }) => (
   <div
     className="grid gap-3 mx-auto"
     style={{
       display: "grid",
-      gridTemplateColumns: "repeat(5, auto)",
+      gridTemplateColumns: "repeat(auto-fit, minmax(100px, 1fr))", // Responsive grid columns
       gap: "10px",
       justifyContent: "center",
-      maxWidth: "500px",
+      maxWidth: "100%",
+      maxHeight: "calc(100vh - 200px)", // Set max height dynamically
+      overflowY: "auto", // Enable vertical scrolling
+      padding: "20px", // Add padding for better spacing
     }}
   >
     {characters.map((item, index) => (
@@ -239,17 +241,15 @@ const Character: NextPage = () => {
                 {selectedTab === "Kanji" && (
                   <div>
                     <h2 className="text-3xl font-bold mb-6">Let's practice Kanji!</h2>
-                    <p className="text-gray-600 mb-4">Practice reading words with kanji characters</p>
+                    <p className="text-gray-600 mb-4">Learn the complex kanji characters</p>
                   </div>
                 )}
               </div>
+              {/* Bảng chữ cái */}
+              <CharacterTable characters={getCharacters()} />
             </div>
-            {/* Bảng chữ cái */}
-            <CharacterTable characters={getCharacters()} />
           </div>
         </div>
-
-        <RightBar />
       </div>
 
       <BottomBar selectedTab="Bảng chữ cái" />

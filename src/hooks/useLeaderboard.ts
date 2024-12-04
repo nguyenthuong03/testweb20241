@@ -15,7 +15,7 @@ export const useLeaderboardUsers = () => {
   useEffect(() => {
     const fetchLeaderboardUsers = async () => {
       try {
-        const response = await fetch("https://nihongo1-latest.onrender.com/api/user/experience-by-level?level=N5");
+        const response = await fetch("http://localhost:8080/api/user/experience-by-level?level=N5");
         const data = await response.json();
         setLeaderboardUsers(data);
       } catch (error) {
