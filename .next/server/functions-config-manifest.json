@@ -1,1 +1,1 @@
-{"version":1,"functions":{"/learn":{},"/leaderboard":{},"/lesson/[lessonId]":{},"/profile":{},"/settings/account":{},"/settings/coach":{},"/setting":{},"/settings/sound":{},"/shop":{},"/characters":{},"/practice":{}}}
+{"version":1,"functions":{"/characters":{},"/lesson/[lessonId]":{},"/leaderboard":{},"/setting":{},"/profile":{},"/settings/account":{},"/learn":{},"/settings/sound":{},"/shop":{},"/practice":{},"/settings/coach":{}}}
